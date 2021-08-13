@@ -17,13 +17,17 @@ class Artist(Model):
 
     def __str__(self):
         return self.name
-        # override string method for printing
+    # override string method for printing
 
     class Meta:
         ordering = ['name', 'created_at']
+# this will order this in the admin, by default will order by created at, add ORDER BY automatically on each query
 # python3 manage.py makemigrations
 # run this when you make or change model
 # only one person needs to make the models and run migration, need to code out models together then migrate
 # then run
 # python3 manage.py migrate
 # \dt ignore sequences
+# python3 manage.py createsuperuser to access admin
+# only need to migrate when on field changes
+# can import other models by from main_app import models
