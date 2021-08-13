@@ -1,0 +1,14 @@
+{%extends 'base.html'%}
+{%block content%}
+<h1 class = "pt-3">Add An Artist</h1>
+<form method='post'>
+{%comment%}Security Feature, this sends a token to prove that this was made by our server{%endcomment%}
+{%csrf_token%}
+{%comment%}.as_p add to paragraph tag{%endcomment%}
+{{form.as_p}}
+{% comment %}<div class = 'input'>
+{{form.name}}
+</div>{% endcomment %}
+<input class="button is-success" type="submit" value="Submit">
+</form>
+{%endblock%}

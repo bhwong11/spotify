@@ -1,7 +1,11 @@
 from django.shortcuts import render
 from django.views import View
 from django.views.generic.base import TemplateView
+# if has a form the view will go on .edit, all others .base except DetailView
+from django.views.generic import DetailView
+from django.views.generic.edit import CreateView, UpdateView
 from .models import Artist
+from django.urls import reverse
 
 from django.http import HttpResponse
 # Create your views here.
@@ -30,8 +34,17 @@ class ArtistList(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # SELECT * FROM main_app_artist
-        context['artists'] = Artist.objects.all()
+        # to get query params
+        name = self.request.GET.get('name')
+        # can change get to post to get post parameters
+        # SELECT * FROM main_app_artist WHERE name=""
+        if name != None:
+            context['artists'] = Artist.objects.filter(name__icontains=name)
+            context['header'] = f"Searching for {name}"
+        else:
+            # SELECT * FROM main_app_artist
+            context['artists'] = Artist.objects.all()
+            context['header'] = f"Trending Artist"
 
         return context
 # unlimited arguements in **kwargs, like spread operator
@@ -58,3 +71,29 @@ class SongList(TemplateView):
         context['songs'] = songs
 
         return context
+
+
+class ArtistCreate(CreateView):
+    model = Artist
+    fields = ['name', 'img', 'bio', 'verified_artist']
+    template_name = 'artist_create.html'
+
+    def get_success_url(self):
+        return reverse("artist_detail", kwargs={'pk': self.object.pk})
+
+
+class ArtistDetail(DetailView):
+    model = Artist
+    template_name = 'artist_detail.html'
+    # DetailView will expect <PK> from URL and fill in context with the model and set name to model name
+
+# SELECT "fields" FROM "model" WHERE id =pk;
+
+
+class ArtistUpdate(UpdateView):
+    model = Artist
+    fields = ['name', 'img', 'bio', 'verified_artist']
+    template_name = 'artist_update.html'
+
+    def get_success_url(self):
+        return reverse("artist_detail", kwargs={'pk': self.object.pk})
