@@ -1,0 +1,12 @@
+{%extends 'base.html'%}
+{%block title%}
+Songs
+{%endblock%}
+
+{%block content%}
+{%for song in songs%}
+<p>{{song.name}}-{{song.artist}}</p>
+{%empty%}
+<p>No Songs</p>
+{%endfor%}
+{%endblock%}
