@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import Model, CharField
+# refactor to just pull out what you need
 
 # Create your models here.
 # class name should match model name, usually is singular and

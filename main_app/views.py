@@ -3,7 +3,7 @@ from django.views import View
 from django.views.generic.base import TemplateView
 # if has a form the view will go on .edit, all others .base except DetailView
 from django.views.generic import DetailView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Artist
 from django.urls import reverse
 
@@ -97,3 +97,23 @@ class ArtistUpdate(UpdateView):
 
     def get_success_url(self):
         return reverse("artist_detail", kwargs={'pk': self.object.pk})
+
+# GET POST
+
+
+class ArtistDelete(DeleteView):
+    model = Artist
+    template_name = "artist_delete_confirmation.html"
+    success_url = '/artists/'
+
+
+def Home(request):
+    return render(request, "home.html")
+
+
+class Example(View):
+    def get(request):
+        return""
+
+    def post(request):
+        return ""
