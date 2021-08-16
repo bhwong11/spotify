@@ -1,5 +1,9 @@
+import time
+
 from django.db import models
 from django.db.models import Model, CharField
+from django.db.models.fields import IntegerField
+from django.db.models.fields.related import ForeignKey
 # refactor to just pull out what you need
 
 # Create your models here.
@@ -32,3 +36,15 @@ class Artist(Model):
 # python3 manage.py createsuperuser to access admin
 # only need to migrate when on field changes
 # can import other models by from main_app import models
+
+
+class Song(Model):
+    title = CharField(max_length=150)
+    length = IntegerField(default=0)
+    artist = ForeignKey(Artist, on_delete=models.CASCADE, related_name='songs')
+
+    def __str__(self):
+        return self.title
+
+    def get_length(self):
+        return time.strftime('%-M:%S', time.gmtime(self.length))

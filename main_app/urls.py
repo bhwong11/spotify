@@ -1,11 +1,11 @@
 from main_app import views
 from django.urls import path
-from .views import Home, About, Base, ArtistList, ArtistCreate, ArtistUpdate, ArtistDelete
+from .views import HomePage, About, Base, ArtistList, ArtistCreate, ArtistUpdate, ArtistDelete, ArtistDetail, SongCreate
 # from . (current dir) bring views
 # path is like router router.get,router.post
 
 urlpatterns = [
-    path('', Home.as_view(), name="home"),
+    path('', HomePage.as_view(), name="home"),
     path('about/', About.as_view(), name="about"),
     path('base/', Base.as_view(), name=('base')),
     path('artists/', ArtistList.as_view(), name='artist_list'),
@@ -16,6 +16,7 @@ urlpatterns = [
     path('artists/<int:pk>/delete/',
          ArtistDelete.as_view(), name="artist_delete"),
     path('artists/<int:pk>/', ArtistDetail.as_view(), name="artist_detail"),
+    path('artists/<int:pk>/songs/new/', SongCreate.as_view(), name='song_create')
 ]
 # '/products/:id = artist/<pk>
 # int will pass it in as a number

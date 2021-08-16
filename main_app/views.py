@@ -1,17 +1,17 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic.base import TemplateView
 # if has a form the view will go on .edit, all others .base except DetailView
 from django.views.generic import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import Artist
+from .models import Artist, Song
 from django.urls import reverse
 
 from django.http import HttpResponse
 # Create your views here.
 
 
-class Home(TemplateView):
+class HomePage(TemplateView):
     template_name = 'home.html'
 
     # def get(self,request):
@@ -50,17 +50,17 @@ class ArtistList(TemplateView):
 # unlimited arguements in **kwargs, like spread operator
 
 
-class Song:
-    def __init__(self, name, artist):
-        self.name = name
-        self.artist = artist
-
-
-songs = [
-    Song("Happy Inc", "Gorillaz"),
-    Song("That one fallout boy song", "Panic! At The Disco"),
-    Song("The Joji Song", "Joji"),
-]
+# class Song:
+#    def __init__(self, name, artist):
+#        self.name = name
+#        self.artist = artist
+#
+#
+# songs = [
+#    Song("Happy Inc", "Gorillaz"),
+#    Song("That one fallout boy song", "Panic! At The Disco"),
+#    Song("The Joji Song", "Joji"),
+# ]
 
 
 class SongList(TemplateView):
@@ -107,13 +107,20 @@ class ArtistDelete(DeleteView):
     success_url = '/artists/'
 
 
-def Home(request):
-    return render(request, "home.html")
-
-
-class Example(View):
-    def get(request):
-        return""
-
-    def post(request):
-        return ""
+# def Home(request):
+#    return render(request, "home.html")
+#
+#
+# class Example(View):
+#    def get(request):
+#        return""
+#
+#    def post(request):
+#        return ""
+class SongCreate(View):
+    def post(self, request, pk):
+        title = request.POST.get('title')
+        length = request.POST.get('length')
+        artist = Artist.objects.get(pk=pk)
+        Song.objects.create(title=title, length=length, artist=artist)
+        return redirect('artist_detail', pk=pk)
